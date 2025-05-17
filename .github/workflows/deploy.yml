@@ -2,7 +2,7 @@ name: Deploy to Server
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
@@ -18,9 +18,9 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           echo "Host deploy_target
-            HostName 192.168.1.244
-            User deployadmin
-            Port 9923
+            HostName 192.163.8.456
+            User pratik
+            Port 22
             IdentityFile ~/.ssh/deploy_key
             StrictHostKeyChecking no" > ~/.ssh/config
 
@@ -42,12 +42,12 @@ jobs:
         run: |
           # Stop and remove existing container if it exists
           ssh deploy_target "docker stop nodejs-mongo-api || true && docker rm nodejs-mongo-api || true"
-          
+
           # Transfer the Docker image to the server
           docker save nodejs-mongo-api | ssh deploy_target "docker load"
-          
+
           # Transfer the env file
           scp .env deploy_target:~/nodejs-mongo-api-env
-          
+
           # Run the Docker container on the server
           ssh deploy_target "docker run -d --name nodejs-mongo-api -p \${PORT:-3000}:3000 --restart unless-stopped --env-file ~/nodejs-mongo-api-env nodejs-mongo-api"
