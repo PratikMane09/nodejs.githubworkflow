@@ -18,8 +18,8 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           echo "Host deploy_target
-            HostName 192.163.8.456
-            User pratik
+            HostName 34.205.72.76
+            User ubuntu
             Port 22
             IdentityFile ~/.ssh/deploy_key
             StrictHostKeyChecking no" > ~/.ssh/config
