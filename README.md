@@ -49,9 +49,10 @@ To set up the GitHub Actions deployment, add the following secrets to your repos
 
 - `SSH_HOST`: Your server IP 
 - `SSH_PORT`: SSH port
-- `SSH_USERNAME`: SSH username 
-- `SSH_PASSWORD`: SSH password
+- `SSH_USER`: SSH username 
+- `SSH_PRIVATE_KEY`: SSH private key
 - `MONGODB_URI`: Your MongoDB connection string
+- `PORT`:The port your application will run on (e.g., 5000)
 
 ## API Endpoints
 
