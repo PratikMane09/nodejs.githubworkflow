@@ -1,27 +1,28 @@
-import mongoose from "mongoose";
+// src/models/Task.js
+import mongoose from 'mongoose';
 
 const taskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, "Task title is required"],
+      required: [true, 'Task title is required'],
       trim: true,
-      maxlength: [100, "Task title cannot be more than 100 characters"],
+      maxlength: [100, 'Task title cannot be more than 100 characters'],
     },
     description: {
       type: String,
       trim: true,
-      maxlength: [500, "Task description cannot be more than 500 characters"],
+      maxlength: [500, 'Task description cannot be more than 500 characters'],
     },
     status: {
       type: String,
-      enum: ["pending", "in-progress", "completed"],
-      default: "pending",
+      enum: ['pending', 'in-progress', 'completed'],
+      default: 'pending',
     },
     priority: {
       type: String,
-      enum: ["low", "medium", "high"],
-      default: "medium",
+      enum: ['low', 'medium', 'high'],
+      default: 'medium',
     },
     dueDate: {
       type: Date,
@@ -32,6 +33,6 @@ const taskSchema = new mongoose.Schema(
   }
 );
 
-const Task = mongoose.model("Task", taskSchema);
+const Task = mongoose.model('Task', taskSchema);
 
 export default Task;
