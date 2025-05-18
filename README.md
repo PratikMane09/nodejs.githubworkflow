@@ -26,7 +26,26 @@ nodejs-mongo-api/
 ├── package.json        - Project dependencies
 └── README.md           - Project documentation
 ```
-
+```
+nodejs-mongo-api/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+├── src/
+│   ├── config/
+│   │   └── db.js
+│   ├── controllers/
+│   │   └── taskController.js
+│   ├── models/
+│   │   └── Task.js
+│   ├── routes/
+│   │   └── taskRoutes.js
+│   └── app.js
+├── .env.example
+├── .gitignore
+├── package.json
+└── README.md
+```
 ## Setup & Installation
 
 1. Clone the repository
