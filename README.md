@@ -22,10 +22,12 @@ nodejs-mongo-api/
 │   ├── routes/         - API routes
 │   └── app.js          - Main application entry point
 ├── .env.example        - Example environment variables
+├── test                - Test file
 ├── .gitignore          - Git ignore file
 ├── package.json        - Project dependencies
 └── README.md           - Project documentation
 ```
+
 ```
 nodejs-mongo-api/
 ├── .github/
@@ -41,11 +43,15 @@ nodejs-mongo-api/
 │   ├── routes/
 │   │   └── taskRoutes.js
 │   └── app.js
+├── tests/
+│   └── task.test.js
 ├── .env.example
 ├── .gitignore
+├── jest.config.js
 ├── package.json
 └── README.md
 ```
+
 ## Setup & Installation
 
 1. Clone the repository
@@ -66,9 +72,9 @@ This project uses GitHub Actions for automatic deployment. The workflow is confi
 
 To set up the GitHub Actions deployment, add the following secrets to your repository:
 
-- `SSH_HOST`: Your server IP 
+- `SSH_HOST`: Your server IP
 - `SSH_PORT`: SSH port
-- `SSH_USER`: SSH username 
+- `SSH_USER`: SSH username
 - `SSH_PRIVATE_KEY`: SSH private key
 - `MONGODB_URI`: Your MongoDB connection string
 - `PORT`:The port your application will run on (e.g., 5000)
