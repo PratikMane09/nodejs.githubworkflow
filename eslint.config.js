@@ -1,5 +1,5 @@
+// eslint.config.js - Compatible with ESLint v9
 
-// eslint.config.js
 export default [
   {
     ignores: ['node_modules/**', 'dist/**']
@@ -19,28 +19,31 @@ export default [
         afterEach: 'readonly',
         afterAll: 'readonly',
       },
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-      },
     },
-    env: {
-      node: true,
-      es2021: true,
-      jest: true,
+    linterOptions: {
+      reportUnusedDisableDirectives: true,
     },
     plugins: {
-      import: {},
+      import: await import('eslint-plugin-import'),
     },
     rules: {
-      'import/extensions': ['error', 'ignorePackages'],
+      // Core ESLint rules similar to airbnb-base
+      'quotes': ['error', 'single'],
+      'semi': ['error', 'always'],
+      'indent': ['error', 2],
+      'comma-dangle': ['error', 'always-multiline'],
+      'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
       'no-console': 'off',
       'no-underscore-dangle': ['error', { allow: ['_id'] }],
       'max-len': ['error', { code: 100 }],
       'no-param-reassign': ['error', { props: false }],
       'consistent-return': 'off',
-      'quotes': ['error', 'single'],
-      'comma-dangle': ['error', 'always-multiline'],
+      
+      // Import rules
+      'import/extensions': ['error', 'ignorePackages'],
+      'import/no-duplicates': 'error',
+      'import/prefer-default-export': 'off',
+      'import/no-extraneous-dependencies': ['error', { 'devDependencies': true }],
     },
   },
 ];
