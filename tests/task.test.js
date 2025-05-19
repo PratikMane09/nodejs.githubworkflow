@@ -1,31 +1,31 @@
-import request from 'supertest';
-import mongoose from 'mongoose';
-import { Types } from 'mongoose';
-import dotenv from 'dotenv';
-import app from '../src/app.js';
-import Task from '../src/models/Task.js';
+import request from "supertest";
+import mongoose from "mongoose";
+import { Types } from "mongoose";
+import dotenv from "dotenv";
+import app from "../src/app.js";
+import Task from "../src/models/Task.js";
 
 // Load environment variables
 dotenv.config();
 
-describe('Task API', () => {
+describe("Task API", () => {
   // Connect to the database before running any tests
   beforeAll(async () => {
     try {
       // Use actual MongoDB URI from .env file or fallback to local test database
       const mongoUri =
-        process.env.MONGODB_URI || 'mongodb://localhost:27017/task-api-test';
+        process.env.MONGODB_URI || "mongodb://localhost:27017/task-api-test";
       await mongoose.connect(mongoUri);
-      console.log('Connected to the test database');
+      console.log("Connected to the test database");
     } catch (error) {
-      console.error('Database connection error:', error);
+      console.error("Database connection error:", error);
     }
   });
 
   // Disconnect after all tests are done
   afterAll(async () => {
     await mongoose.disconnect();
-    console.log('Disconnected from test database');
+    console.log("Disconnected from test database");
   });
 
   // Clear the database before each test
@@ -33,25 +33,25 @@ describe('Task API', () => {
     await Task.deleteMany({});
   });
 
-  describe('GET /api/tasks', () => {
-    it('should return all tasks', async () => {
+  describe("GET /api/tasks", () => {
+    it("should return all tasks", async () => {
       // Create test tasks
       await Task.create([
         {
-          title: 'Test Task 1',
-          description: 'Test Description 1',
-          status: 'pending',
-          priority: 'low',
+          title: "Test Task 1",
+          description: "Test Description 1",
+          status: "pending",
+          priority: "low",
         },
         {
-          title: 'Test Task 2',
-          description: 'Test Description 2',
-          status: 'in-progress',
-          priority: 'high',
+          title: "Test Task 2",
+          description: "Test Description 2",
+          status: "in-progress",
+          priority: "high",
         },
       ]);
 
-      const res = await request(app).get('/api/tasks');
+      const res = await request(app).get("/api/tasks");
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
@@ -59,23 +59,23 @@ describe('Task API', () => {
     });
   });
 
-  describe('GET /api/tasks/:id', () => {
-    it('should return a single task', async () => {
+  describe("GET /api/tasks/:id", () => {
+    it("should return a single task", async () => {
       const task = await Task.create({
-        title: 'Test Task',
-        description: 'Test Description',
-        status: 'pending',
-        priority: 'medium',
+        title: "Test Task",
+        description: "Test Description",
+        status: "pending",
+        priority: "medium",
       });
 
       const res = await request(app).get(`/api/tasks/${task._id}`);
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
-      expect(res.body.data.title).toBe('Test Task');
+      expect(res.body.data.title).toBe("Test Task");
     });
 
-    it('should return 404 if task not found', async () => {
+    it("should return 404 if task not found", async () => {
       const nonExistentId = new Types.ObjectId();
       const res = await request(app).get(`/api/tasks/${nonExistentId}`);
 
@@ -84,30 +84,30 @@ describe('Task API', () => {
     });
   });
 
-  describe('POST /api/tasks', () => {
-    it('should create a new task', async () => {
+  describe("POST /api/tasks", () => {
+    it("should create a new task", async () => {
       const taskData = {
-        title: 'New Task',
-        description: 'New Description',
-        status: 'pending',
-        priority: 'medium',
+        title: "New Task",
+        description: "New Description",
+        status: "pending",
+        priority: "medium",
         dueDate: new Date().toISOString(),
       };
 
-      const res = await request(app).post('/api/tasks').send(taskData);
+      const res = await request(app).post("/api/tasks").send(taskData);
 
       expect(res.status).toBe(201);
       expect(res.body.success).toBe(true);
-      expect(res.body.data.title).toBe('New Task');
+      expect(res.body.data.title).toBe("New Task");
 
       const task = await Task.findById(res.body.data._id);
       expect(task).not.toBeNull();
     });
 
-    it('should return 400 if title is missing', async () => {
-      const res = await request(app).post('/api/tasks').send({
-        description: 'Invalid Task',
-        status: 'pending',
+    it("should return 400 if title is missing", async () => {
+      const res = await request(app).post("/api/tasks").send({
+        description: "Invalid Task",
+        status: "pending",
       });
 
       expect(res.status).toBe(400);
@@ -115,33 +115,33 @@ describe('Task API', () => {
     });
   });
 
-  describe('PUT /api/tasks/:id', () => {
-    it('should update a task', async () => {
+  describe("PUT /api/tasks/:id", () => {
+    it("should update a task", async () => {
       const task = await Task.create({
-        title: 'Test Task',
-        description: 'Test Description',
-        status: 'pending',
-        priority: 'medium',
+        title: "Test Task",
+        description: "Test Description",
+        status: "pending",
+        priority: "medium",
       });
 
       const res = await request(app).put(`/api/tasks/${task._id}`).send({
-        title: 'Updated Task',
-        status: 'completed',
+        title: "Updated Task",
+        status: "completed",
       });
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
-      expect(res.body.data.title).toBe('Updated Task');
-      expect(res.body.data.status).toBe('completed');
+      expect(res.body.data.title).toBe("Updated Task");
+      expect(res.body.data.status).toBe("completed");
 
       const updatedTask = await Task.findById(task._id);
-      expect(updatedTask.title).toBe('Updated Task');
+      expect(updatedTask.title).toBe("Updated Task");
     });
 
-    it('should return 404 if task not found', async () => {
+    it("should return 404 if task not found", async () => {
       const nonExistentId = new Types.ObjectId();
       const res = await request(app).put(`/api/tasks/${nonExistentId}`).send({
-        title: 'Updated Task',
+        title: "Updated Task",
       });
 
       expect(res.status).toBe(404);
@@ -149,13 +149,13 @@ describe('Task API', () => {
     });
   });
 
-  describe('DELETE /api/tasks/:id', () => {
-    it('should delete a task', async () => {
+  describe("DELETE /api/tasks/:id", () => {
+    it("should delete a task", async () => {
       const task = await Task.create({
-        title: 'Test Task',
-        description: 'Test Description',
-        status: 'pending',
-        priority: 'medium',
+        title: "Test Task",
+        description: "Test Description",
+        status: "pending",
+        priority: "medium",
       });
 
       const res = await request(app).delete(`/api/tasks/${task._id}`);
@@ -167,7 +167,7 @@ describe('Task API', () => {
       expect(deletedTask).toBeNull();
     });
 
-    it('should return 404 if task not found', async () => {
+    it("should return 404 if task not found", async () => {
       const nonExistentId = new Types.ObjectId();
       const res = await request(app).delete(`/api/tasks/${nonExistentId}`);
 
